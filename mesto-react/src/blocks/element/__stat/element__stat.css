@@ -1,0 +1,4 @@
+.element__stat {
+  display: flex;
+  flex-direction: column;
+}

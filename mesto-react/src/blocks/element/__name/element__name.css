@@ -1,0 +1,15 @@
+.element__name {
+  margin: 0;
+  padding: 0;
+
+  width: calc(100% - 22px - 30px); /*100% от info где уже учитываются паддинги, минус ширина лайка и ещё чтобы было между ними расстояние*/
+
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  color: black;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
