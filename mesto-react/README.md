@@ -1,3 +1,20 @@
+# mesto-react
+
+### Описание
+
+ * [Этот сервис](https://github.com/fevralkolesnik/mesto) был переписан использованием библиотеки React, JSX и утилиты CRA. 
+
+Функционал остался тем же.
+
+### Доработка
+
+Полная реализация прошлого функционала
+
+### Планы по доработке проекта
+Ждемс проверки ревьюера)
+
+### ________________________________________
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
