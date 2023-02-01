@@ -8,7 +8,7 @@ export default function Main(props) {
     const [userAvatar, setUserAvatar] = React.useState("../images/avatar.jpg");
     const [cards, setCards] = React.useState([]);
     
-    const {onEditProfile, onAddPlace, onEditAvatar, onCard} = props;
+    const {onEditProfile, onAddPlace, onEditAvatar, onDeleteCard, onCard} = props;
     
     React.useEffect(() => {
         api.getUserInfo()
@@ -48,7 +48,7 @@ export default function Main(props) {
             <section className="elements" aria-label="Фото">
                 {cards.map((card) => (
                     <div key={card._id}>
-                        <Card card={card} onCardClick={onCard}/>
+                        <Card card={card} onCardClick={onCard} onDeleteClick={onDeleteCard}/>
                     </div>
                 ))}
             </section>

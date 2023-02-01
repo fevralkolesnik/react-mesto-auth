@@ -7,20 +7,25 @@ import ImagePopup from "./ImagePopup";
 
 export default function App() {
 
-  const [isEditProfilePopupOpen, setEditProfilePopup] = React.useState(false);
-  const [isAddPlacePopupOpen, setAddPlacePopup] = React.useState(false);
-  const [isEditAvatarPopupOpen, setEditAvatarPopup] = React.useState(false);
+  const [isEditProfilePopupOpen, setIsEditProfilePopup] = React.useState(false);
+  const [isAddPlacePopupOpen, setIsAddPlacePopup] = React.useState(false);
+  const [isEditAvatarPopupOpen, setIsEditAvatarPopup] = React.useState(false);
+  const [isDeleteCardOpen, setIsDeleteCardOpen] = React.useState(false);
 
   function handleEditProfileClick () {
-    setEditProfilePopup(!isEditProfilePopupOpen);
+    setIsEditProfilePopup(true);
   }
 
   function handleAddPlaceClick () {
-    setAddPlacePopup(!isAddPlacePopupOpen);
+    setIsAddPlacePopup(true);
   }
 
   function handleEditAvatarClick () {
-    setEditAvatarPopup(!isEditAvatarPopupOpen);
+    setIsEditAvatarPopup(true);
+  }
+
+  function handleDeleteCardClick () {
+    setIsDeleteCardOpen(true);
   }
 
   const [selectedCard, setSelectedCard] = React.useState({name: "", link: ""});
@@ -31,9 +36,10 @@ export default function App() {
 
 
   function closeAllPopups () {
-    setEditProfilePopup(false);
-    setAddPlacePopup(false);
-    setEditAvatarPopup(false);
+    setIsEditProfilePopup(false);
+    setIsAddPlacePopup(false);
+    setIsEditAvatarPopup(false);
+    setIsDeleteCardOpen(false);
     setSelectedCard({...selectedCard, name: "", link: ""})
   }
 
@@ -45,6 +51,7 @@ export default function App() {
       <Main onEditProfile={handleEditProfileClick} 
             onAddPlace={handleAddPlaceClick} 
             onEditAvatar={handleEditAvatarClick}  
+            onDeleteCard={handleDeleteCardClick}
             onCard={handleCardClick}/>
 
       <Footer />
@@ -88,7 +95,7 @@ export default function App() {
               required
               minLength="2"
               maxLength="30"/>
-              <span class="popup__input-error placeName-error"></span>
+              <span className="popup__input-error placeName-error"></span>
           </label>
 
           <label className="popup__form-field">
@@ -116,9 +123,7 @@ export default function App() {
           </label>
       </PopupWithForm>
 
-      <PopupWithForm title='Вы уверены?' name='delete-card'>
-          <button className="popup__submit-button" type="submit" aria-label="Удалить карточку">Да</button>
-      </PopupWithForm> 
+      <PopupWithForm title='Вы уверены?' name='delete-card' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/>
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
