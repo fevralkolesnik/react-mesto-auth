@@ -1,14 +1,14 @@
 import React from "react";
 import api from '../utils/api';
+import Card from "./Card";
 
 export default function Main(props) {
-
     const [userName, setUserName] = React.useState("Жак-Ив Кусто");
     const [userDescription , setUserDescription ] = React.useState("Исследователь океана");
     const [userAvatar, setUserAvatar] = React.useState("../images/avatar.jpg");
     const [cards, setCards] = React.useState([]);
     
-    const {onEditProfile, onAddPlace, onEditAvatar} = props;
+    const {onEditProfile, onAddPlace, onEditAvatar, onCard} = props;
     
     React.useEffect(() => {
         api.getUserInfo()
@@ -23,13 +23,12 @@ export default function Main(props) {
     
             api.getAllCards()
             .then ((data) => {
-                setCards([...cards, data]);
+                setCards(data);
             })
             .catch (err => {
                 console.log(`Произошла ошибка: ${err}`);
             });
     }, []);
-
     
 
     return(
@@ -45,9 +44,13 @@ export default function Main(props) {
                 <p className="profile__description">{userDescription}</p>
                 <button onClick={onAddPlace} className="profile__add-button" type="button" aria-label="Добавить публикацию"></button>
             </section>
-
-            <section className="elements" aria-label="Фото">
                 
+            <section className="elements" aria-label="Фото">
+                {cards.map((card) => (
+                    <div key={card._id}>
+                        <Card card={card} onCardClick={onCard}/>
+                    </div>
+                ))}
             </section>
         </main>
     );

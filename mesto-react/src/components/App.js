@@ -23,19 +23,29 @@ export default function App() {
     setEditAvatarPopup(!isEditAvatarPopupOpen);
   }
 
+  const [selectedCard, setSelectedCard] = React.useState({name: "", link: ""});
+
+  function handleCardClick (card) {
+    setSelectedCard({...selectedCard, name: card.name, link: card.link})
+  }
+
 
   function closeAllPopups () {
     setEditProfilePopup(false);
     setAddPlacePopup(false);
     setEditAvatarPopup(false);
+    setSelectedCard({...selectedCard, name: "", link: ""})
   }
 
 
   return (
-    <body className="page">
+    <div className="page">
       <Header />
 
-      <Main onEditProfile={handleEditProfileClick} onAddPlace={handleAddPlaceClick} onEditAvatar={handleEditAvatarClick}/>
+      <Main onEditProfile={handleEditProfileClick} 
+            onAddPlace={handleAddPlaceClick} 
+            onEditAvatar={handleEditAvatarClick}  
+            onCard={handleCardClick}/>
 
       <Footer />
 
@@ -106,28 +116,13 @@ export default function App() {
           </label>
       </PopupWithForm>
 
-      {/* <PopupWithForm title='Вы уверены?' name='delete-card'>
+      <PopupWithForm title='Вы уверены?' name='delete-card'>
           <button className="popup__submit-button" type="submit" aria-label="Удалить карточку">Да</button>
-      </PopupWithForm> */}
+      </PopupWithForm> 
 
-      <ImagePopup />
+      <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
-      <template id="template-element">
-        <article className="element">
-          <div className="element__square">
-            <img className="element__image"/>
-          </div>
-          <div className="element__info">
-            <h2 className="element__name"></h2>
-            <div className="element__stat">
-              <button className="element__like" aria-label="Мне нравится" type="button"></button>
-              <p className="element__count-likes"></p>
-            </div>
-          </div>
-          <button className="element__delete-button" type="button" aria-label="Удалить карточку"></button>
-        </article>
-      </template>
-  </body>
+  </div>
   );
 }
 
