@@ -56,7 +56,7 @@ export default function App() {
 
       <Footer />
 
-      <PopupWithForm title='Редактировать профиль' name='edit-profile' button='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm title='Редактировать профиль' name='edit-profile' buttonText='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
           <label className="popup__form-field">
               <input
               className="popup__input popup__input_type_name"
@@ -84,7 +84,7 @@ export default function App() {
           </label>
       </PopupWithForm>
       
-      <PopupWithForm title='Новое место' name='add-card' button='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm title='Новое место' name='add-card' buttonText='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
           <label className="popup__form-field">
               <input
               className="popup__input popup__input_type_place"
@@ -110,7 +110,7 @@ export default function App() {
           </label>
       </PopupWithForm>
 
-      <PopupWithForm title='Обновить аватар' name='set-avatar' button='Сохранить' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
+      <PopupWithForm title='Обновить аватар' name='set-avatar' buttonText='Сохранить' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
           <label className="popup__form-field">
               <input
               className="popup__input popup__input_type_avatar"
@@ -123,7 +123,7 @@ export default function App() {
           </label>
       </PopupWithForm>
 
-      <PopupWithForm title='Вы уверены?' name='delete-card' button='Да' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/>
+      <PopupWithForm title='Вы уверены?' name='delete-card' buttonText='Да' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/>
 
       <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 
