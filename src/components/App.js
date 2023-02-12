@@ -12,7 +12,7 @@ export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopup] = React.useState(false);
   const [isAddPlacePopupOpen, setIsAddPlacePopup] = React.useState(false);
   const [isEditAvatarPopupOpen, setIsEditAvatarPopup] = React.useState(false);
-  const [isDeleteCardOpen, setIsDeleteCardOpen] = React.useState(false);
+  // const [isDeleteCardOpen, setIsDeleteCardOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState({name: '', about: '', avatar: '', _id: ''});
 
   React.useEffect(() => {
@@ -36,6 +36,10 @@ export default function App() {
   function handleEditAvatarClick () {
     setIsEditAvatarPopup(true);
   }
+  
+  // function handleCardDeleteClick () {
+  //   setIsDeleteCardOpen(true);
+  // }
 
 
 
@@ -57,17 +61,19 @@ export default function App() {
     setSelectedCard({...selectedCard, name: card.name, link: card.link})
   }
 
-  function handleCardDelete () {
-    setIsDeleteCardOpen(true);
-  }
-
   function handleCardLike(card) {
     const isLiked = card.likes.some(i => i._id === currentUser._id);
     
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+    api.changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        console.log(newCard);
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
     });
-}
+  }
+  
+  function handleCardDelete (card) {
+
+  }
 
 
 
@@ -76,7 +82,7 @@ export default function App() {
     setIsEditProfilePopup(false);
     setIsAddPlacePopup(false);
     setIsEditAvatarPopup(false);
-    setIsDeleteCardOpen(false);
+    // setIsDeleteCardOpen(false);
     setSelectedCard({...selectedCard, name: "", link: ""})
   }
 
@@ -165,7 +171,7 @@ export default function App() {
             </label>
         </PopupWithForm>
 
-        <PopupWithForm title='Вы уверены?' name='delete-card' buttonText='Да' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/>
+        {/* <PopupWithForm title='Вы уверены?' name='delete-card' buttonText='Да' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/> */}
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups}/>
 

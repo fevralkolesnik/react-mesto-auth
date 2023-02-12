@@ -76,6 +76,10 @@ class Api {
     .then (this.#onResponce);
   }
 
+  changeLikeCardStatus (cardId, isLiked) {
+    return isLiked ? this.addLikeCard(cardId) : this.deleteLikeCard(cardId);
+  }
+
   setAvatar (avatar) {
     return fetch(`${this._url}/users/me/avatar`, {
       method: 'PATCH',
@@ -86,6 +90,8 @@ class Api {
     })
     .then (this.#onResponce);
   }
+
+
 }
 
 const api = new Api ({
