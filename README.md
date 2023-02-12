@@ -1,8 +1,10 @@
 # mesto-react
 
+* [Mesto-react сервис](https://fevralkolesnik.github.io/mesto-react/)
+
 ### Описание
 
- * [Этот сервис](https://github.com/fevralkolesnik/mesto) был переписан использованием библиотеки React, JSX и утилиты CRA. 
+ * [Mesto сервис](https://github.com/fevralkolesnik/mesto) был переписан использованием библиотеки React, JSX и утилиты CRA. 
 
 Функционал остался тем же.
 
