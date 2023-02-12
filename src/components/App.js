@@ -66,13 +66,15 @@ export default function App() {
     
     api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
-        console.log(newCard);
         setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
     });
   }
   
   function handleCardDelete (card) {
-
+    api.deleteCard(card._id)
+      .then((message) => {
+        setCards((state) => state.filter((item) => item._id !== card._id));
+    });
   }
 
 

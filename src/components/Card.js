@@ -15,6 +15,10 @@ export default function Card (props) {
     function handleLikeClick () {
         onLikeClick(card);
     }
+
+    function handleDeleteClick () {
+        onDeleteClick(card);
+    }
         
     function handleCardClick () {
         onCardClick(card);
@@ -32,7 +36,7 @@ export default function Card (props) {
                 <p className="element__count-likes">{card.likes.length}</p>
                 </div>
             </div>
-            {isOwn && <button className="element__delete-button" type="button" aria-label="Удалить карточку" onClick={onDeleteClick}></button>}
+            {isOwn && <button className="element__delete-button" type="button" aria-label="Удалить карточку" onClick={handleDeleteClick}></button>}
          </article>
     )
 }
