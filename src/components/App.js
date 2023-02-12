@@ -4,6 +4,7 @@ import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm"; // delete
 import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
 import ImagePopup from "./ImagePopup";
 import api from '../utils/api';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
@@ -87,6 +88,14 @@ export default function App() {
       })
   }
 
+  function handleUpdateUserAvatar(userAvatar) {
+    api.setAvatar(userAvatar) 
+      .then((data) => {
+        setCurrentUser({...currentUser, avatar: data.avatar});
+        closeAllPopups();
+      })
+  }
+
 
 
 
@@ -116,7 +125,7 @@ export default function App() {
 
         <Footer />
 
-        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />
         
         <PopupWithForm title='Новое место' name='add-card' buttonText='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
             <label className="popup__form-field">
@@ -144,18 +153,7 @@ export default function App() {
             </label>
         </PopupWithForm>
 
-        <PopupWithForm title='Обновить аватар' name='set-avatar' buttonText='Сохранить' isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups}>
-            <label className="popup__form-field">
-                <input
-                className="popup__input popup__input_type_avatar"
-                type="url"
-                id="profileAvatar"
-                name="link"
-                placeholder="Ссылка на картинку"
-                required/>
-                <span className="popup__input-error profileAvatar-error"></span>
-            </label>
-        </PopupWithForm>
+        <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateUserAvatar}/>
 
         {/* <PopupWithForm title='Вы уверены?' name='delete-card' buttonText='Да' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/> */}
 
