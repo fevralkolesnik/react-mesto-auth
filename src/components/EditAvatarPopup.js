@@ -13,6 +13,8 @@ export default function EditAvatarPopup (props) {
         onUpdateAvatar({
           avatar: avatar.current.value
         });
+
+        avatar.current.value = '';
     }
 
 
