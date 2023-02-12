@@ -2,7 +2,8 @@ import React from 'react';
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
+import PopupWithForm from "./PopupWithForm"; // delete
+import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from "./ImagePopup";
 import api from '../utils/api';
 import {CurrentUserContext} from '../contexts/CurrentUserContext';
@@ -72,9 +73,18 @@ export default function App() {
   
   function handleCardDelete (card) {
     api.deleteCard(card._id)
-      .then((message) => {
-        setCards((state) => state.filter((item) => item._id !== card._id));
+      .then(() => {
+        setCards((state) => state.filter((c) => c._id !== card._id));
     });
+  }
+
+
+  function handleUpdateUser(userInfo) {
+    api.setUserInfo(userInfo) 
+      .then((data) => {
+        setCurrentUser({...currentUser, name: data.name, about: data.about});
+        closeAllPopups();
+      })
   }
 
 
@@ -106,33 +116,7 @@ export default function App() {
 
         <Footer />
 
-        <PopupWithForm title='Редактировать профиль' name='edit-profile' buttonText='Сохранить' isOpen={isEditProfilePopupOpen} onClose={closeAllPopups}>
-            <label className="popup__form-field">
-                <input
-                className="popup__input popup__input_type_name"
-                type="text"
-                name="name"
-                id="profileName"
-                placeholder="Имя"
-                required
-                minLength="2"
-                maxLength="40"/>
-                <span className="popup__input-error profileName-error"></span>
-            </label>
-
-            <label className="popup__form-field">
-                <input
-                className="popup__input popup__input_type_description"
-                type="text"
-                name="description"
-                id="profileDescription"
-                placeholder="О себе"
-                required
-                minLength="2"
-                maxLength="200"/>
-                <span className="popup__input-error profileDescription-error"></span>
-            </label>
-        </PopupWithForm>
+        <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser}/>
         
         <PopupWithForm title='Новое место' name='add-card' buttonText='Создать' isOpen={isAddPlacePopupOpen} onClose={closeAllPopups}>
             <label className="popup__form-field">

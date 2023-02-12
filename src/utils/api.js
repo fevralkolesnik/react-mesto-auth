@@ -20,13 +20,13 @@ class Api {
     .then (this.#onResponce);
   }
 
-  editUserInfo(userInfo) {
+  setUserInfo(userInfo) {
     return fetch(`${this._url}/users/me`, {
       method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         name: userInfo.name,
-        about: userInfo.description
+        about: userInfo.about
       })
     })
     .then (this.#onResponce);
