@@ -90,8 +90,6 @@ class Api {
     })
     .then (this.#onResponce);
   }
-
-
 }
 
 const api = new Api ({
