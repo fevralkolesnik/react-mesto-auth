@@ -9,9 +9,9 @@ export default function Header() {
 
     const navigate = useNavigate();
 
-    function signOut(){
+    function onSignOut(){
         localStorage.removeItem('token');
-        navigate('login', {replace: true});
+        navigate('/signin', {replace: true});
     }
 
     return(
@@ -22,7 +22,7 @@ export default function Header() {
                 <Route path='/' element={
                     <div className='header__conteiner'>
                         <p className='header__email'>{currentUser.email}</p>
-                        <Link to='/signin' className='header__link' onClick={signOut}>Выйти</Link>
+                        <Link to='/signin' className='header__link' onClick={onSignOut}>Выйти</Link>
                     </div>
                 } />
                 <Route path='/signup' element={<Link to='/signin' className='header__link'>Войти</Link>} />

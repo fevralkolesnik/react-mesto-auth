@@ -1,16 +1,17 @@
-# mesto-react
+# react-mesto-auth
 
-* [Mesto-react сервис](https://fevralkolesnik.github.io/mesto-react/)
+* [Mesto-react сервис с регистрацией](https://fevralkolesnik.github.io/react-mesto-auth/)
 
 ### Описание
 
- * [Mesto сервис](https://github.com/fevralkolesnik/mesto) был переписан использованием библиотеки React, JSX и утилиты CRA. 
+ * [Mesto сервис](https://github.com/fevralkolesnik/mesto) был переписан использованием библиотеки React, JSX и утилиты CRA с добавлением регистрации.
 
 Функционал остался тем же.
 
 ### Доработка
 
-Полная реализация прошлого функционала
+1. Добавить валидацию формы.
+2. Закрытие попапов нажатием за окном.
 
 ### Планы по доработке проекта
 Ждемс проверки ревьюера)
