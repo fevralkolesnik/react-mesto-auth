@@ -9,6 +9,8 @@ export const register = (email, password) => {
         },
         body: JSON.stringify({email, password})
     })
+    .then ((res) => res.json())
+    .catch((err) => err);
 }
 
 export const authorize = (email, password) => {
@@ -21,6 +23,7 @@ export const authorize = (email, password) => {
         body: JSON.stringify({email, password})
     })
     .then ((res) => res.json())
+    .catch((err) => console.log(err));
 }
 
 export const getContent = (token) => {
@@ -32,4 +35,5 @@ export const getContent = (token) => {
         }
       })
       .then(res => res.json())
+      .catch((err) => console.log(err));
 } 

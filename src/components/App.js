@@ -13,7 +13,7 @@ import ImagePopup from "./ImagePopup";
 import Login from "./Login";
 import Register from "./Register";
 import ProtectedRouteElement from "./ProtectedRoute";
-import { getContent } from "../auth";
+import * as auth from '../utils/auth';
 
 export default function App() {
   const [isEditProfilePopupOpen, setIsEditProfilePopup] = useState(false);
@@ -28,44 +28,85 @@ export default function App() {
     avatar: "",
     _id: "",
     email: "",
-    loggedIn: false, 
   });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
 
   const navigate = useNavigate(); 
 
   function handleLoggedIn (email) {
-    setCurrentUser((user) => ({...user, email: email, loggedIn: true}));
+    // setCurrentUser((user) => ({...user, email: email }));
+    setCurrentUser({...currentUser, email: email });
+    setIsLoggedIn(true);
+  }
+
+  function handleLoggedOut () {
+    setCurrentUser({...currentUser, name: "", about: "", avatar: "", _id: "", email: ""});
+    setIsLoggedIn(false);
+    setCards([]);
   }
 
   function handleTokenCheck () {
-    if (localStorage.getItem('token')){
-      const token = localStorage.getItem('token');
-      getContent(token)
+    const token = localStorage.getItem('token');
+    if (token){
+      auth.getContent(token)
       .then((res) => {
         if (res) {
           handleLoggedIn(res.data.email);
           navigate("/", {replace: true});
         }
       })
-      .catch((err) => {
-        console.log(`Произошла ошибка: ${err}`);
-      });
     }
   }
 
+  function handleLogin (email, password) {
+    auth.authorize(email, password)
+        .then ((res) => {
+            if (res.token) {
+                localStorage.setItem('token', res.token);
+                handleLoggedIn(email);
+                navigate('/', {replace: true});
+            }});
+  }
+
+  function handleRegister (email, password) {
+    auth.register(email, password)
+        .then(() => {
+          setIsSuccessfully(true);
+          setIsInfoTooltipOpen(true);
+          navigate('/signin', {replace: true});
+          console.log('ok')
+        })
+        .catch(() => {
+          setIsSuccessfully(false);
+          setIsInfoTooltipOpen(true);
+          console.log('err')
+        })
+
+  }
+
   useEffect(() => {
+    if (!isLoggedIn) {
+      return;
+    }
     api
       .getUserInfo()
       .then((data) => {
-        setCurrentUser((user) => ({
-          ...user,
+        // setCurrentUser((user) => ({
+        //   ...user,
+        //   name: data.name,
+        //   about: data.about,
+        //   avatar: data.avatar,
+        //   _id: data._id,
+        // }));
+        setCurrentUser({
+          ...currentUser,
           name: data.name,
           about: data.about,
           avatar: data.avatar,
           _id: data._id,
-        }));
+        });
       })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
@@ -78,9 +119,7 @@ export default function App() {
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
       });
-
-    
-  }, []);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     handleTokenCheck();
@@ -184,11 +223,11 @@ export default function App() {
   return (
     <div className="page">
       <CurrentUserContext.Provider value={currentUser}>
-        <Header />
+        <Header onExitUser={handleLoggedOut} />
 
         <Routes>
           
-          <Route path='/' element={<ProtectedRouteElement component={Main}
+          <Route path='/' element={<ProtectedRouteElement component={Main} isLoggedIn={isLoggedIn}
           cards={cards}
           onEditProfile={handleEditProfileClick}
           onAddPlace={handleAddPlaceClick}
@@ -198,9 +237,9 @@ export default function App() {
           onCard={handleCardClick} />}
           />
 
-          <Route path='/signup' element={<Register onResult={setIsSuccessfully} onModalWindow={handleInfoTooltip} />} />
+          <Route path='/signup' element={<Register onRegister={handleRegister} />} />
 
-          <Route path='/signin' element={<Login handleLoggedIn={handleLoggedIn} />} />
+          <Route path='/signin' element={<Login onLogin={handleLogin} />} />
 
         </Routes>
 

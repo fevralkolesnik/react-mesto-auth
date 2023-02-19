@@ -3,7 +3,9 @@ import { Route, Routes, Link, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import { useContext } from 'react';
 
-export default function Header() {
+export default function Header(props) {
+    
+    const {onExitUser} = props;
 
     const currentUser = useContext(CurrentUserContext);
 
@@ -11,6 +13,7 @@ export default function Header() {
 
     function onSignOut(){
         localStorage.removeItem('token');
+        onExitUser();
         navigate('/signin', {replace: true});
     }
 

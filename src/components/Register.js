@@ -1,26 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import WindowWithForm from "./WindowWithForm";
-import { register } from '../auth.js'; 
 
 export default function Register (props) {
 
-    const {onResult, onModalWindow} = props;
-    const navigate = useNavigate();
+    const {onRegister} = props;
 
     function handleRegister (formValue) {
-        register(formValue.email, formValue.password)
-        .then((res) => {
-            if (res.status < 400) {
-                onResult(true);
-                onModalWindow();
-                navigate('/signin', {replace: true});
-            }
-            else {
-                onResult(false);
-                onModalWindow();
-            }
-        })
-        .catch((err) => console.log(err));
+        onRegister(formValue.email, formValue.password);
     }
 
     return (
@@ -31,4 +17,4 @@ export default function Register (props) {
         </WindowWithForm>
 
     )
-}
+} 
