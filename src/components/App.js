@@ -57,11 +57,15 @@ export default function App() {
   function handleTokenCheck() {
     const token = localStorage.getItem("token");
     if (token) {
-      auth.getContent(token).then((res) => {
+      auth.getContent(token)
+      .then((res) => {
         if (res) {
           handleLoggedIn(res.data.email);
           navigate("/", { replace: true });
         }
+      })
+      .catch((err) => {
+        console.log(`Произошла ошибка: ${err}`);
       });
     }
   }
@@ -72,8 +76,6 @@ export default function App() {
       .then((res) => {
         localStorage.setItem("token", res.token);
         handleLoggedIn(email);
-        setIsSuccessfully(true);
-        setIsInfoTooltipOpen(true);
         navigate("/", { replace: true });
       })
       .catch(() => {
