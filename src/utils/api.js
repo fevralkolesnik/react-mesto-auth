@@ -90,13 +90,21 @@ class Api {
     })
     .then (this.#onResponce);
   }
+
+  setToken(token) {
+    this._headers = {
+      ...this._headers,
+      'authorization': `Bearer ${token}`
+    }
+  }
 }
 
+const token = localStorage.getItem("token");
 const api = new Api ({
-  url: 'https://mesto.nomoreparties.co/v1/cohort-56',
+  url: 'https://mesto.fevralkolesnikova.nomoreparties.sbs',
   headers: {
     "Content-type": "application/json",
-    "authorization": "faa27423-4696-4ea8-9c6e-5d108b9b47f8"
+    'authorization': `Bearer ${token}`
   }
 });
 

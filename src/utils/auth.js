@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://auth.nomoreparties.co';
+export const BASE_URL = 'https://mesto.fevralkolesnikova.nomoreparties.sbs';
 
 function onResponce (res) {
     if (res.ok) {
@@ -31,14 +31,3 @@ export const authorize = (email, password) => {
     })
     .then (onResponce);
 }
-
-export const getContent = (token) => {
-    return fetch(`${BASE_URL}/users/me`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        }
-      })
-      .then (onResponce);
-} 

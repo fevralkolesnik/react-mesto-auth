@@ -5,6 +5,7 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
+import DeleteCardPopup from "./DeleteCardPopup";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
@@ -21,7 +22,6 @@ export default function App() {
   const [isEditAvatarPopupOpen, setIsEditAvatarPopup] = useState(false);
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [isSuccessfully, setIsSuccessfully] = useState(false);
-  // const [isDeleteCardOpen, setIsDeleteCardOpen] = React.useState(false);
   const [currentUser, setCurrentUser] = useState({
     name: "",
     about: "",
@@ -32,11 +32,11 @@ export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [cards, setCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState({ name: "", link: "" });
+  const [deletedCard, setDeletedCard] = useState({ _id: "" });
 
   const navigate = useNavigate();
 
   function handleLoggedIn(email) {
-    // setCurrentUser((user) => ({...user, email: email }));
     setCurrentUser({ ...currentUser, email: email });
     setIsLoggedIn(true);
   }
@@ -57,10 +57,10 @@ export default function App() {
   function handleTokenCheck() {
     const token = localStorage.getItem("token");
     if (token) {
-      auth.getContent(token)
+      api.getUserInfo()
       .then((res) => {
         if (res) {
-          handleLoggedIn(res.data.email);
+          handleLoggedIn(res.email);
           navigate("/", { replace: true });
         }
       })
@@ -75,6 +75,7 @@ export default function App() {
       .authorize(email, password)
       .then((res) => {
         localStorage.setItem("token", res.token);
+        api.setToken(res.token);
         handleLoggedIn(email);
         navigate("/", { replace: true });
       })
@@ -105,13 +106,6 @@ export default function App() {
     api
       .getUserInfo()
       .then((data) => {
-        // setCurrentUser((user) => ({
-        //   ...user,
-        //   name: data.name,
-        //   about: data.about,
-        //   avatar: data.avatar,
-        //   _id: data._id,
-        // }));
         setCurrentUser({
           ...currentUser,
           name: data.name,
@@ -131,10 +125,12 @@ export default function App() {
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
       });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoggedIn]);
 
   useEffect(() => {
     handleTokenCheck();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleEditProfileClick() {
@@ -149,20 +145,16 @@ export default function App() {
     setIsEditAvatarPopup(true);
   }
 
-  function handleInfoTooltip() {
-    setIsInfoTooltipOpen(true);
+  function handleCardDeleteClick (card) {
+    setDeletedCard({ ...deletedCard, _id: card._id });
   }
-
-  // function handleCardDeleteClick () {
-  //   setIsDeleteCardOpen(true);
-  // }
 
   function handleCardClick(card) {
     setSelectedCard({ ...selectedCard, name: card.name, link: card.link });
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((i) => i === currentUser._id);
 
     api
       .changeLikeCardStatus(card._id, !isLiked)
@@ -181,6 +173,7 @@ export default function App() {
       .deleteCard(card._id)
       .then(() => {
         setCards((state) => state.filter((c) => c._id !== card._id));
+        closeAllPopups();
       })
       .catch((err) => {
         console.log(`Произошла ошибка: ${err}`);
@@ -228,7 +221,7 @@ export default function App() {
     setIsAddPlacePopup(false);
     setIsEditAvatarPopup(false);
     setIsInfoTooltipOpen(false);
-    // setIsDeleteCardOpen(false);
+    setDeletedCard({ ...deletedCard, _id: "" });
     setSelectedCard({ ...selectedCard, name: "", link: "" });
   }
 
@@ -248,7 +241,7 @@ export default function App() {
                 onEditProfile={handleEditProfileClick}
                 onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick}
-                onCardDelete={handleCardDelete}
+                onCardDelete={handleCardDeleteClick}
                 onCardLike={handleCardLike}
                 onCard={handleCardClick}
               />
@@ -289,7 +282,7 @@ export default function App() {
           onClose={closeAllPopups}
         />
 
-        {/* <PopupWithForm title='Вы уверены?' name='delete-card' buttonText='Да' isOpen={isDeleteCardOpen} onClose={closeAllPopups}/> */}
+        <DeleteCardPopup card={deletedCard} onClose={closeAllPopups} onSubmit={handleCardDelete}/>
 
         <ImagePopup card={selectedCard} onClose={closeAllPopups} />
       </CurrentUserContext.Provider>
